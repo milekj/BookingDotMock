@@ -1,43 +1,30 @@
-package com.milekj.dbtest.entity;
+package com.milekj.bookingdotmock.service;
 
-import org.hibernate.annotations.Generated;
+import com.milekj.bookingdotmock.entity.User;
+import com.milekj.bookingdotmock.entity.UserRole;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
-@Entity
-@Table(name = "user_details")
-public class DbUserDetails implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @OneToOne
-    @JoinColumn(name = "username")
+public class UserDetailsImpl implements org.springframework.security.core.userdetails.UserDetails {
     private User user;
+    private List<GrantedAuthorityImpl> authorities;
 
-    @Column(nullable = false)
-    private String email;
+    public UserDetailsImpl(User user, List<UserRole> roles) {
+        this.user = user;
+        authorities = convertToAuthorities(roles);
 
-    public String getEmail() {
-        return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public User getUser() {
+        return user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user
-            .getAuthorities()
-            .stream()
-            .map(a -> a.getId().getAuthority())
-            .map(GrantedAuthorityImpl::new)
-            .collect(Collectors.toList());
+        return authorities;
     }
 
     @Override
@@ -81,5 +68,13 @@ public class DbUserDetails implements UserDetails {
         public String getAuthority() {
             return authority;
         }
+    }
+
+    private static List<GrantedAuthorityImpl> convertToAuthorities(List<UserRole> roles){
+        return roles
+                .stream()
+                .map(a -> a.getId().getAuthority())
+                .map(GrantedAuthorityImpl::new)
+                .collect(Collectors.toList());
     }
 }

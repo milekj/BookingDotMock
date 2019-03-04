@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="#" th:action="@{/processRegistrationForm}" th:object="${userDTO}" method="post">
+        <table>
+            <tbody>
+                <tr>
+                    <td><label>username:</label></td>
+                    <td><input type="text" th:field="*{username}" /></td>
+                    <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></td>
+                </tr>
+                <tr>
+                    <td><label>password:</label></td>
+                    <td><input type="password" th:field="*{password}"/></td>
+                    <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></td>
+                    <td th:if="${#fields.hasErrors('passwordsMatch')}" th:errors="*{passwordsMatch}"></td>
+                </tr>
+                <tr>
+                    <td><label>confirm password:</label></td>
+                    <td><input type="password" th:field="*{passwordConfirmation}"/></td>
+                    <td th:if="${#fields.hasErrors('passwordConfirmation')}" th:errors="*{passwordConfirmation}"></td>
+                </tr>
+                <tr>
+                    <td><label>email:</label></td>
+                    <td><input type="text" th:field="*{email}" /></td>
+                    <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></td>
+                </tr>
+                <tr>
+                    <td><button type="submit" >Register!</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</body>
+</html>

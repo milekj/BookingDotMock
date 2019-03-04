@@ -1,31 +1,35 @@
-package com.milekj.dbtest.entity;
+package com.milekj.bookingdotmock.entity;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class User {
     @Id
     @Column(length = 50)
     private String username;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 60)
     private String password;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private boolean enabled;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<Authority> authorities;
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserRole> roles;
 
     public User() {
     }
 
-    public User(String username, String password, boolean enabled) {
+    public User(String username, String password, boolean enabled, String email) {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
+        this.email = email;
     }
 
     public String getUsername() {
@@ -52,7 +56,16 @@ public class User {
         this.enabled = enabled;
     }
 
-    public List<Authority> getAuthorities() {
-        return authorities;
+    public String getEmail() {
+        return email;
     }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public List<UserRole> getRoles() {
+        return roles;
+    }
+    
 }
