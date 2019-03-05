@@ -7,7 +7,7 @@ import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-public class UserDTO {
+public class RegistrationFormDTO {
     @UsernameUnique
     @NotEmpty(message = "Username is required")
     private String username;

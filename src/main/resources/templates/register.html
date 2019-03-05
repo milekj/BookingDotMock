@@ -7,7 +7,7 @@
     <title>Title</title>
 </head>
 <body>
-    <form action="#" th:action="@{/processRegistrationForm}" th:object="${userDTO}" method="post">
+    <form action="#" th:action="@{${targetURL}}" th:object="${formDTO}" method="post">
         <table>
             <tbody>
                 <tr>

@@ -1,6 +1,8 @@
 package com.milekj.bookingdotmock.controller;
 
-import com.milekj.bookingdotmock.repository.UserDTO;
+import com.milekj.bookingdotmock.repository.RegistrationFormDTO;
+import com.milekj.bookingdotmock.service.OwnerService;
+import com.milekj.bookingdotmock.service.RegistrationService;
 import com.milekj.bookingdotmock.service.UserDetailsImpl;
 import com.milekj.bookingdotmock.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,32 +17,53 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class TestController {
-    private UserService userService;
+    private RegistrationService registrationService;
 
     @GetMapping("/info")
     public String home(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
-        model.addAttribute("username", userDetails.getUsername());
+        model.addAttribute("user", userDetails.getUser());
         return "info";
     }
 
-    @GetMapping("/register")
-    public String showRegisterForm(Model model) {
-        model.addAttribute("userDTO", new UserDTO());
-        return "register";
+    @GetMapping("/registerUser")
+    public String showUserRegistrationForm(Model model) {
+        return prepareRegistrationForm(model, "processUserRegistrationForm");
     }
 
-    @PostMapping("/processRegistrationForm")
-    public String processRegisterForm(@ModelAttribute @Validated UserDTO userDTO, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("userDTO", userDTO);
-            return "register";
-        }
-        userService.save(userDTO);
+    @GetMapping("/registerOwner")
+    public String showOwnerRegistrationForm(Model model) {
+        return prepareRegistrationForm(model, "processOwnerRegistrationForm");
+    }
+
+    @PostMapping("/processUserRegistrationForm")
+    public String processUserRegisterForm(@ModelAttribute("formDTO") @Validated RegistrationFormDTO formDTO, BindingResult result, Model model) {
+        if (result.hasErrors())
+            return prepareAndGetErrorFormView(formDTO, model);
+        registrationService.addNewUser(formDTO);
         return "redirect:/";
     }
 
+    @PostMapping("/processOwnerRegistrationForm")
+    public String processOwnerRegisterForm(@ModelAttribute("formDTO") @Validated RegistrationFormDTO formDTO, BindingResult result, Model model) {
+        if (result.hasErrors())
+            return prepareAndGetErrorFormView(formDTO, model);
+        registrationService.addNewOwner(formDTO);
+        return "redirect:/";
+    }
+
+    private String prepareRegistrationForm(Model model, String targetURL) {
+        model.addAttribute("formDTO", new RegistrationFormDTO());
+        model.addAttribute("targetURL", targetURL);
+        return "register";
+    }
+
+    private String prepareAndGetErrorFormView(RegistrationFormDTO formDTO, Model model) {
+        model.addAttribute("formDTO", formDTO);
+        return "register";
+    }
+
     @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+    public void setRegistrationService(RegistrationService registrationService) {
+        this.registrationService = registrationService;
     }
 }

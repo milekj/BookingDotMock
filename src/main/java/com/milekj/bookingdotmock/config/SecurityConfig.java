@@ -17,8 +17,8 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    DataSource dataSource;
-    UserDetailsService userDetailsService;
+    private DataSource dataSource;
+    private UserDetailsService userDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .formLogin()
                 .and()
             .authorizeRequests()
-            .antMatchers("/", "/register")
+            .antMatchers("/", "/register*", "/process*")
             .permitAll()
                 .and()
             .authorizeRequests()

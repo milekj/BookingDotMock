@@ -1,10 +1,12 @@
 package com.milekj.bookingdotmock.entity;
 
 import javax.persistence.*;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
     @Id
     @Column(length = 50)
@@ -23,13 +25,24 @@ public class User {
     private List<UserRole> roles;
 
     public User() {
+        roles = new LinkedList<>();
     }
 
     public User(String username, String password, boolean enabled, String email) {
+        this();
         this.username = username;
         this.password = password;
         this.enabled = enabled;
         this.email = email;
+    }
+
+    public void addToRoles(UserRole role) {
+        roles.add(role);
+    }
+
+    public void addRole(UserRole role) {
+        addToRoles(role);
+        role.setUser(this);
     }
 
     public String getUsername() {

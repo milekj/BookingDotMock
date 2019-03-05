@@ -6,6 +6,8 @@
     <title>Title</title>
 </head>
 <body>
-    Siema, <th th:text="${username}" />!
+    Siema, <th th:text="${user.getUsername()}" />! <br>
+    <th th:text="${user.getEmail()}" />!
+    </th>
 </body>
 </html>
