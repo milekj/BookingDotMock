@@ -2,8 +2,10 @@ package com.milekj.bookingdotmock.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,10 +17,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity()
+@PropertySource("authorities.properties")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private DataSource dataSource;
     private UserDetailsService userDetailsService;
+    @Value("${authorities.owner}")
+    private String OWNER_AUTHORITY;
+
+    @Value("${authorities.customer}")
+    private String CUSTOMER_AUTHORITY;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -29,18 +37,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-//            .authorizeRequests()
-//            .anyRequest()
-//            .permitAll();
             .formLogin()
                 .and()
-            .authorizeRequests()
-            .antMatchers("/", "/register*", "/process*")
-            .permitAll()
+            .logout()
                 .and()
             .authorizeRequests()
-            .anyRequest()
-            .authenticated();
+                .antMatchers("/hotels/*").hasAuthority(OWNER_AUTHORITY)
+                .antMatchers("/", "/register*", "/process*").permitAll()
+                .anyRequest().authenticated();
+
     }
 
     @Bean

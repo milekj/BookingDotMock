@@ -80,5 +80,4 @@ public class User {
     public List<UserRole> getRoles() {
         return roles;
     }
-    
 }

@@ -4,6 +4,7 @@ import com.milekj.bookingdotmock.entity.Owner;
 import com.milekj.bookingdotmock.entity.User;
 import com.milekj.bookingdotmock.repository.RegistrationFormDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,6 @@ import java.net.URLEncoder;
 
 @Component
 public class RegistrationUtilities {
-    public static final String OWNER_AUTHORITY = "OWNER";
-    public static final String CUSTOMER_AUTHORITY = "CUSTOMER";
-
     private static PasswordEncoder encoder;
 
     public static User toUser(RegistrationFormDTO registrationFormDTO) {

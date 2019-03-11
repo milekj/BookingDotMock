@@ -1,12 +1,8 @@
 package com.milekj.bookingdotmock.controller;
 
 import com.milekj.bookingdotmock.repository.RegistrationFormDTO;
-import com.milekj.bookingdotmock.service.OwnerService;
 import com.milekj.bookingdotmock.service.RegistrationService;
-import com.milekj.bookingdotmock.service.UserDetailsImpl;
-import com.milekj.bookingdotmock.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,14 +12,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class TestController {
+public class RegistrationController {
     private RegistrationService registrationService;
-
-    @GetMapping("/info")
-    public String home(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
-        model.addAttribute("user", userDetails.getUser());
-        return "info";
-    }
 
     @GetMapping("/registerUser")
     public String showUserRegistrationForm(Model model) {

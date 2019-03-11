@@ -8,6 +8,7 @@ import com.milekj.bookingdotmock.repository.OwnerRepository;
 import com.milekj.bookingdotmock.repository.RegistrationFormDTO;
 import com.milekj.bookingdotmock.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,12 @@ import static com.milekj.bookingdotmock.service.RegistrationUtilities.*;
 
 @Service
 public class RegistrationService {
+    @Value("${authorities.owner}")
+    private String OWNER_AUTHORITY;
+
+    @Value("${authorities.customer}")
+    private String CUSTOMER_AUTHORITY;
+
     private UserRepository userRepository;
     private OwnerRepository ownerRepository;
 

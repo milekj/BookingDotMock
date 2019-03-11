@@ -8,6 +8,11 @@
 <body>
     Siema, <th th:text="${user.getUsername()}" />! <br>
     <th th:text="${user.getEmail()}" />!
-    </th>
+    <table>
+        <tr th:each="role : ${user.getRoles()}">
+            <td th:text="${role.getId().getAuthority()}" /><br>
+        </tr>
+    </table>
+
 </body>
 </html>
