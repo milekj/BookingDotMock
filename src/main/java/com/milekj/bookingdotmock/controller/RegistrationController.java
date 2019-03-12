@@ -1,6 +1,6 @@
 package com.milekj.bookingdotmock.controller;
 
-import com.milekj.bookingdotmock.repository.RegistrationFormDTO;
+import com.milekj.bookingdotmock.dto.RegistrationFormDTO;
 import com.milekj.bookingdotmock.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

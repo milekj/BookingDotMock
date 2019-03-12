@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="#" th:action="@{/hotels/processAddRoom}" th:object="${room}" method="post">
+    <input type="hidden" th:name="hotelId" th:value="${hotelId}"/>
+    <table>
+        <tbody>
+        <tr>
+            <td><label>room number:</label></td>
+            <td><input type="text" th:field="*{id.roomNumber}" /></td>
+            <td th:if="${#fields.hasErrors('id.roomNumber')}" th:errors="*{id.roomNumber}"></td>
+        </tr>
+        <tr>
+            <td><label>max guests number:</label></td>
+            <td><input type="text" th:field="*{maxGuestsNumber}"/></td>
+            <td th:if="${#fields.hasErrors('maxGuestsNumber')}" th:errors="*{maxGuestsNumber}"></td>
+        </tr>
+        <tr>
+            <td><label>price per night:</label></td>
+            <td><input type="text" th:field="*{pricePerNight}"/></td>
+            <td th:if="${#fields.hasErrors('pricePerNight')}" th:errors="*{pricePerNight}"></td>
+        </tr>
+        <tr>
+            <td><button type="submit">Add!</button></td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+</body>
+</html>

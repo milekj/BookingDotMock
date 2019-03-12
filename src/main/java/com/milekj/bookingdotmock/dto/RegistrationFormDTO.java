@@ -1,4 +1,4 @@
-package com.milekj.bookingdotmock.repository;
+package com.milekj.bookingdotmock.dto;
 
 import com.milekj.bookingdotmock.validation.EmailUnique;
 import com.milekj.bookingdotmock.validation.UsernameUnique;
@@ -23,7 +23,7 @@ public class RegistrationFormDTO {
     @NotEmpty(message = "Email is required")
     private String email;
 
-    @AssertTrue(message = "Passwords don\'t match")
+    @AssertTrue(message = "Passwords don't match")
     private boolean passwordsMatch;
 
     public void setPassword(String password) {

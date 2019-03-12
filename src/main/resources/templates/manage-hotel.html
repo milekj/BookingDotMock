@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    This hotel is going to be managed some time soon:
+    <th th:text="${hotel.getName()}"/> <br>
+    <a th:href="@{/hotels/addRoom(hotelId = ${hotel.getId()})}">add new room</a>
+    <table>
+        <tr>
+            <th>room number</th>
+            <th>max guests number</th>
+            <th>price per night</th>
+        </tr>
+        <tr th:each="room : ${hotel.getRooms()}">
+            <td th:text="${room.id.roomNumber}" />
+            <td th:text="${room.maxGuestsNumber}" />
+            <td th:text="${room.pricePerNight}" />
+        </tr>
+    </table>
+
+
+</body>
+</html>

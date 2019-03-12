@@ -8,8 +8,8 @@
 </head>
 <body>
     Choose which hotel to manage:<br>
-    <form action="#" th:action="@{/hotels/processChoose}" method="get">
-        <select th:name="hotelID">
+    <form action="#" th:action="@{/hotels/processChoose}" method="post">
+        <select th:name="hotelId">
             <option th:each="hotel : ${hotels}"
                     th:value="${hotel.getId()}"
                     th:text="${hotel.getName()} + ', ' + ${hotel.getCity()}" />
