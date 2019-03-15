@@ -1,5 +1,6 @@
 package com.milekj.bookingdotmock.service;
 
+import com.milekj.bookingdotmock.entity.Customer;
 import com.milekj.bookingdotmock.entity.Owner;
 import com.milekj.bookingdotmock.entity.User;
 import com.milekj.bookingdotmock.dto.RegistrationFormDTO;
@@ -11,8 +12,8 @@ import org.springframework.stereotype.Component;
 public class RegistrationUtilities {
     private static PasswordEncoder encoder;
 
-    public static User toUser(RegistrationFormDTO registrationFormDTO) {
-        return new User(registrationFormDTO.getUsername(),
+    public static Customer toCustomer(RegistrationFormDTO registrationFormDTO) {
+        return new Customer(registrationFormDTO.getUsername(),
                 registrationFormDTO.getPassword(),
                 true,
                 registrationFormDTO.getEmail());

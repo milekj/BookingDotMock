@@ -1,12 +1,9 @@
 package com.milekj.bookingdotmock.service;
 
-import com.milekj.bookingdotmock.entity.Owner;
-import com.milekj.bookingdotmock.entity.User;
-import com.milekj.bookingdotmock.entity.UserRole;
-import com.milekj.bookingdotmock.entity.UserRolePK;
+import com.milekj.bookingdotmock.entity.*;
+import com.milekj.bookingdotmock.repository.CustomerRepository;
 import com.milekj.bookingdotmock.repository.OwnerRepository;
 import com.milekj.bookingdotmock.dto.RegistrationFormDTO;
-import com.milekj.bookingdotmock.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,14 +19,14 @@ public class RegistrationService {
     @Value("${authorities.customer}")
     private String CUSTOMER_AUTHORITY;
 
-    private UserRepository userRepository;
+    private CustomerRepository customerRepository;
     private OwnerRepository ownerRepository;
 
     @Transactional
-    public void addNewUser(RegistrationFormDTO formDTO) {
-        User user = toUser(formDTO);
-        addAuthorityAndEncodePassword(user, CUSTOMER_AUTHORITY);
-        userRepository.save(user);
+    public void addNewCustomer(RegistrationFormDTO formDTO) {
+        Customer customer = toCustomer(formDTO);
+        addAuthorityAndEncodePassword(customer, CUSTOMER_AUTHORITY);
+        customerRepository.save(customer);
     }
 
     @Transactional
@@ -47,8 +44,8 @@ public class RegistrationService {
     }
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public void setCustomerRepository(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
     }
 
     @Autowired

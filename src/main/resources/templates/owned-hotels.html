@@ -18,6 +18,8 @@
         <td th:text="${hotel.getCity()}" />
         <td th:text="${hotel.getAddress()}" />
         <td><a th:href="@{/hotels/manage(hotelId=${hotel.getId()})}">manage</a></td>
+        <td><a th:href="@{/hotels/edit(hotelId=${hotel.getId()})}">edit</a></td>
+        <td><a th:href="@{/hotels/delete(hotelId=${hotel.getId()})}">delete</a></td>
     </tr>
 </table>
 </body>

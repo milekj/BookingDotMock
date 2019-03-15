@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class RegistrationController {
     private RegistrationService registrationService;
 
-    @GetMapping("/registerUser")
-    public String showUserRegistrationForm(Model model) {
-        return prepareRegistrationForm(model, "processUserRegistrationForm");
+    @GetMapping("/registerCustomer")
+    public String showCustomerRegistrationForm(Model model) {
+        return prepareRegistrationForm(model, "processCustomerRegistrationForm");
     }
 
     @GetMapping("/registerOwner")
@@ -25,16 +25,20 @@ public class RegistrationController {
         return prepareRegistrationForm(model, "processOwnerRegistrationForm");
     }
 
-    @PostMapping("/processUserRegistrationForm")
-    public String processUserRegisterForm(@ModelAttribute("formDTO") @Validated RegistrationFormDTO formDTO, BindingResult result, Model model) {
+    @PostMapping("/processCustomerRegistrationForm")
+    public String processCustomerRegisterForm(@ModelAttribute("formDTO") @Validated RegistrationFormDTO formDTO,
+                                              BindingResult result,
+                                              Model model) {
         if (result.hasErrors())
             return prepareAndGetErrorFormView(formDTO, model);
-        registrationService.addNewUser(formDTO);
+        registrationService.addNewCustomer(formDTO);
         return "redirect:/";
     }
 
     @PostMapping("/processOwnerRegistrationForm")
-    public String processOwnerRegisterForm(@ModelAttribute("formDTO") @Validated RegistrationFormDTO formDTO, BindingResult result, Model model) {
+    public String processOwnerRegisterForm(@ModelAttribute("formDTO") @Validated RegistrationFormDTO formDTO,
+                                           BindingResult result,
+                                           Model model) {
         if (result.hasErrors())
             return prepareAndGetErrorFormView(formDTO, model);
         registrationService.addNewOwner(formDTO);

@@ -7,9 +7,7 @@
     <title>Title</title>
 </head>
 <body>
-    This hotel is going to be managed some time soon:
-    <th th:text="${hotel.getName()}"/> <br>
-    <a th:href="@{/hotels/addRoom(hotelId = ${hotel.getId()})}">add new room</a>
+    <th th:text="${hotel.name}"/> <br>
     <table>
         <tr>
             <th>room number</th>
@@ -17,12 +15,14 @@
             <th>price per night</th>
         </tr>
         <tr th:each="room : ${hotel.getRooms()}">
-            <td th:text="${room.id.roomNumber}" />
+            <td th:text="${room.roomNumber}" />
             <td th:text="${room.maxGuestsNumber}" />
             <td th:text="${room.pricePerNight}" />
+            <td> <a th:href="@{/rooms/edit(hotelId=${hotel.id} ,roomId = ${room.id})}"/>edit</td>
+            <td> <a th:href="@{/rooms/delete(hotelId=${hotel.id} ,roomId = ${room.id})}"/>delete</td>
         </tr>
     </table>
-
+    <a th:href="@{/rooms/add(hotelId = ${hotel.id})}">add new room</a>
 
 </body>
 </html>

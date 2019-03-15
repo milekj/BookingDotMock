@@ -2,7 +2,7 @@ package com.milekj.bookingdotmock.service;
 
 import com.milekj.bookingdotmock.entity.Hotel;
 import com.milekj.bookingdotmock.entity.Owner;
-import com.milekj.bookingdotmock.exception.ResourceRestrictedException;
+import com.milekj.bookingdotmock.exception.ResourceRestrictedOrNotExistingException;
 import com.milekj.bookingdotmock.repository.HotelRepository;
 import com.milekj.bookingdotmock.repository.OwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +17,14 @@ public class HotelService {
     private OwnerRepository ownerRepository;
 
     @Transactional(readOnly = true)
-    public Hotel getHotelById(long hotelId) {
+    public Hotel findById(long hotelId) {
         return hotelRepository
                 .findById(hotelId)
-                .orElseThrow(() -> new ResourceRestrictedException("Hotel with given id does not exist"));
+                .orElseThrow(() -> new ResourceRestrictedOrNotExistingException("Hotel with given id does not exist"));
     }
 
     @Transactional
-    public void addHotel(Hotel hotel, String username) {
+    public void saveOrUpdate(Hotel hotel, String username) {
         Owner owner = ownerRepository
                 .findById(username)
                 .orElseThrow(() -> new SecurityException("User has no permission to add a hotel or does not exist"));
@@ -35,16 +35,21 @@ public class HotelService {
     }
 
     @Transactional(readOnly = true)
-    public List<Hotel> getHotelsForOwnerUsername(String username) {
+    public List<Hotel> findByOwnerUsername(String username) {
         return hotelRepository.getAllByOwnerUsername(username);
         //add checking if username belongs to an owner
     }
 
     @Transactional(readOnly = true)
-    public Hotel getHotelByIdIfOwned(long id, String username) {
+    public Hotel findByIdIfOwned(long id, String username) {
         return hotelRepository
                 .findByIdAndOwnerUsername(id, username)
-                .orElseThrow(() -> new ResourceRestrictedException("Hotel with given id does not exist or is not owned by user"));
+                .orElseThrow(() -> new ResourceRestrictedOrNotExistingException("Hotel with given id does not exist or is not owned by user"));
+    }
+
+    @Transactional
+    public void deleteById(long hotelId) {
+        hotelRepository.deleteById(hotelId);
     }
 
     @Autowired

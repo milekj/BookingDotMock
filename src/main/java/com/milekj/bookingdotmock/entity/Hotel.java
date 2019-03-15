@@ -23,7 +23,7 @@ public class Hotel {
     private String address;
 
     @ManyToOne(cascade = {CascadeType.PERSIST})
-    @JoinColumn(name = "owner")
+    @JoinColumn(name = "owner_id")
     private Owner owner;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
@@ -58,6 +58,11 @@ public class Hotel {
     public Long getId() {
         return id;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public void setOwner(Owner owner) {
         this.owner = owner;
     }

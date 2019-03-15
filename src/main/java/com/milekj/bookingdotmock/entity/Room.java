@@ -4,25 +4,30 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "rooms")
+@Table(name = "rooms", uniqueConstraints = @UniqueConstraint(
+        columnNames = {"hotel_id", "roomNumber"}
+))
 public class Room {
-    @EmbeddedId
-    private RoomPK id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     @ManyToOne
-    @MapsId("hotelId")
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
+
+    @Column(length = 5)
+    private String roomNumber;
 
     private Integer maxGuestsNumber;
     private BigDecimal pricePerNight;
 
     public Room() {
-        System.out.println("nowy room");
     }
 
-    public Room(RoomPK id, int maxGuestsNumber, BigDecimal pricePerNight) {
-        this.id = id;
+    public Room(Hotel hotel, String roomNumber, Integer maxGuestsNumber, BigDecimal pricePerNight) {
+        this.hotel = hotel;
+        this.roomNumber = roomNumber;
         this.maxGuestsNumber = maxGuestsNumber;
         this.pricePerNight = pricePerNight;
     }
@@ -32,11 +37,11 @@ public class Room {
         hotel.addToRooms(this);
     }
 
-    public RoomPK getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(RoomPK id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -46,6 +51,14 @@ public class Room {
 
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
+    }
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
     public Integer getMaxGuestsNumber() {
