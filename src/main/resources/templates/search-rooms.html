@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="#" th:action="@{/processSearch}" th:object="${roomSearchDto}" method="post">
+    <table>
+        <tbody>
+        <tr>
+            <td><label>city:</label></td>
+            <td><input type="text" th:field="*{city}" /></td>
+            <td th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></td>
+        </tr>
+        <tr>
+            <td><label>start date:</label></td>
+            <td><input type="date" th:field="*{startDate}" /></td>
+            <td th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></td>
+            <td th:if="${#fields.hasErrors('datesValid')}" th:errors="*{datesValid}"></td>
+        </tr>
+        <tr>
+            <td><label>end date:</label></td>
+            <td><input type="date" th:field="*{endDate}" /></td>
+            <td th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></td>
+        </tr>
+        <tr>
+            <td><label>guests number:</label></td>
+            <td><input type="text" th:field="*{guestsNumber}" /></td>
+            <td th:if="${#fields.hasErrors('guestsNumber')}" th:errors="*{guestsNumber}"></td>
+        </tr>
+        <tr>
+            <td><label>minimal price:</label></td>
+            <td><input type="text" th:field="*{minPrice}" /></td>
+            <td th:if="${#fields.hasErrors('minPrice')}" th:errors="*{minPrice}"></td>
+            <td th:if="${#fields.hasErrors('pricesValid')}" th:errors="*{pricesValid}"></td>
+        </tr>
+        <tr>
+            <td><label>maximal price:</label></td>
+            <td><input type="text" th:field="*{maxPrice}" /></td>
+            <td th:if="${#fields.hasErrors('maxPrice')}" th:errors="*{maxPrice}"></td>
+        </tr>
+        <tr>
+            <td><button type="submit">Search!</button></td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+</body>
+</html>

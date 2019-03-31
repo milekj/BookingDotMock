@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
+
 @Controller
 public class RegistrationController {
     private RegistrationService registrationService;
@@ -26,7 +28,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/processCustomerRegistrationForm")
-    public String processCustomerRegisterForm(@ModelAttribute("formDTO") @Validated RegistrationFormDTO formDTO,
+    public String processCustomerRegisterForm(@ModelAttribute("formDTO") @Valid RegistrationFormDTO formDTO,
                                               BindingResult result,
                                               Model model) {
         if (result.hasErrors())
@@ -36,7 +38,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/processOwnerRegistrationForm")
-    public String processOwnerRegisterForm(@ModelAttribute("formDTO") @Validated RegistrationFormDTO formDTO,
+    public String processOwnerRegisterForm(@ModelAttribute("formDTO") @Valid RegistrationFormDTO formDTO,
                                            BindingResult result,
                                            Model model) {
         if (result.hasErrors())

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -23,7 +24,6 @@ public class RoomController {
                                          Model model) {
         model.addAttribute("room", new Room());
         model.addAttribute("hotelId", hotelId);
-        model.addAttribute("targetUrl", "/rooms/processAdd");
         return "add-edit-room";
     }
 
@@ -35,33 +35,35 @@ public class RoomController {
         Room room = roomService.findByIdIfOwned(roomId, userDetails.getUsername());
         model.addAttribute("room", room);
         model.addAttribute("hotelId", hotelId);
-        model.addAttribute("targetUrl", "/rooms/processEdit");
         return "add-edit-room";
     }
 
     @GetMapping("/delete")
-    public String showEditRoomToHotelForm(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public String deleteRoom(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                           @RequestParam long roomId,
                                           @RequestParam long hotelId,
                                           RedirectAttributes redirectAttributes) {
-        roomService.deleteById(roomId, userDetails.getUsername());
+        roomService.delete(roomId, userDetails.getUsername());
         return redirectToHotelManagement(redirectAttributes, hotelId);
     }
 
-    @PostMapping("/processAdd")
-    public String processAddRoomForm(@ModelAttribute @Valid Room room,
-                                     @RequestParam long hotelId,
-                                     RedirectAttributes redirectAttributes) {
-        roomService.addRoomToHotel(room, hotelId);
-        return redirectToHotelManagement(redirectAttributes, hotelId);
-    }
-
-    @PostMapping("/processEdit")
-    public String processEditRoomForm(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                      @ModelAttribute @Valid Room room,
-                                      @RequestParam long hotelId,
-                                      RedirectAttributes redirectAttributes) {
-        roomService.saveOrUpdate(room, userDetails.getUsername());
+    @PostMapping("/processAddOrEdit")
+    public String processAddOrEditRoomForm(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                           @ModelAttribute @Valid Room room,
+                                           BindingResult result,
+                                           Model model,
+                                           @RequestParam long hotelId,
+                                           RedirectAttributes redirectAttributes) {
+        if(result.hasErrors()) {
+            model.addAttribute("room", room);
+            model.addAttribute("hotelId", hotelId);
+            return "add-edit-room";
+        }
+        String username = userDetails.getUsername();
+        if (room.getId() == 0)
+            roomService.save(room, hotelId, username);
+        else
+            roomService.edit(room, username);
         return redirectToHotelManagement(redirectAttributes, hotelId);
     }
 

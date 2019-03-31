@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface HotelRepository extends JpaRepository<Hotel, Long> {
     List<Hotel> getAllByOwnerUsername(String username);
     Optional<Hotel> findByIdAndOwnerUsername(long id, String username);
+    boolean existsByIdAndOwnerUsername(long id, String username);
 }

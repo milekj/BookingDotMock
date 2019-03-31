@@ -1,9 +1,7 @@
 package com.milekj.bookingdotmock.controller;
 
 import com.milekj.bookingdotmock.entity.Hotel;
-import com.milekj.bookingdotmock.entity.Room;
 import com.milekj.bookingdotmock.service.HotelService;
-import com.milekj.bookingdotmock.service.RoomService;
 import com.milekj.bookingdotmock.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -39,8 +37,7 @@ public class HotelController {
     @GetMapping("/delete")
     public String deleteHotel(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                     @RequestParam long hotelId) {
-        Hotel hotel = hotelService.findByIdIfOwned(hotelId, userDetails.getUsername());
-        hotelService.deleteById(hotelId);
+        hotelService.deleteById(hotelId, userDetails.getUsername());
         return "redirect:/hotels/owned";
     }
 
@@ -53,7 +50,11 @@ public class HotelController {
             model.addAttribute("hotel", hotel);
             return "add-edit-hotel";
         }
-        hotelService.saveOrUpdate(hotel, userDetails.getUsername());
+        String username = userDetails.getUsername();
+        if (hotel.getId() == 0)
+            hotelService.saveIfOwned(hotel, username);
+        else
+            hotelService.updateIfOwned(hotel, username);
         return "redirect:/hotels/owned";
     }
 

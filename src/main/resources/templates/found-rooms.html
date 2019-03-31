@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    Rooms for <th th:text="${roomSearchDto.guestsNumber}"/> guests
+    in <th th:text="${roomSearchDto.city}"/>
+    from <th th:text="${roomSearchDto.startDate}"/>
+    to <th th:text="${roomSearchDto.endDate}"/><br><br>
+
+    <table>
+        <tr>
+            <th>hotel</th>
+            <th>room number</th>
+            <th>price per night</th>
+        </tr>
+        <tr th:each="room : ${rooms}">
+            <td th:text="${room.hotel.name}"/>
+            <td th:text="${room.roomNumber}"/>
+            <td th:text="${room.pricePerNight}"/>
+            <td> <a th:href="@{/bookings/add
+                    (roomId = ${room.id},
+                    startDate = ${roomSearchDto.startDate},
+                    endDate = ${roomSearchDto.endDate},
+                    guestsNumber = ${roomSearchDto.guestsNumber})}"/>Book now!</td>
+        </tr>
+    </table>
+</body>
+</html>

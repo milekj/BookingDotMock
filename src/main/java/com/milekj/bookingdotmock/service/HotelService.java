@@ -6,6 +6,7 @@ import com.milekj.bookingdotmock.exception.ResourceRestrictedOrNotExistingExcept
 import com.milekj.bookingdotmock.repository.HotelRepository;
 import com.milekj.bookingdotmock.repository.OwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,28 +17,26 @@ public class HotelService {
     private HotelRepository hotelRepository;
     private OwnerRepository ownerRepository;
 
-    @Transactional(readOnly = true)
-    public Hotel findById(long hotelId) {
-        return hotelRepository
-                .findById(hotelId)
-                .orElseThrow(() -> new ResourceRestrictedOrNotExistingException("Hotel with given id does not exist"));
+    @Transactional
+    public void saveIfOwned(Hotel hotel, String username) {
+        Owner owner = ownerRepository
+                .findById(username)
+                .orElseThrow(() -> new ResourceRestrictedOrNotExistingException("User is not an owner"));
+        owner.addHotel(hotel);
+        hotelRepository.save(hotel);
     }
 
     @Transactional
-    public void saveOrUpdate(Hotel hotel, String username) {
-        Owner owner = ownerRepository
-                .findById(username)
-                .orElseThrow(() -> new SecurityException("User has no permission to add a hotel or does not exist"));
-        //consider using @Secured
-        owner.addHotel(hotel);
+    public void updateIfOwned(Hotel hotel, String username) {
+        Owner owner = getHotelOwnerIfOwned(hotel.getId(), username);
+        hotel.setOwner(owner);
         hotelRepository.save(hotel);
-
     }
 
-    @Transactional(readOnly = true)
-    public List<Hotel> findByOwnerUsername(String username) {
-        return hotelRepository.getAllByOwnerUsername(username);
-        //add checking if username belongs to an owner
+    @Transactional
+    public void deleteById(long hotelId, String username) {
+        getHotelOwnerIfOwned(hotelId, username);
+        hotelRepository.deleteById(hotelId);
     }
 
     @Transactional(readOnly = true)
@@ -47,9 +46,16 @@ public class HotelService {
                 .orElseThrow(() -> new ResourceRestrictedOrNotExistingException("Hotel with given id does not exist or is not owned by user"));
     }
 
-    @Transactional
-    public void deleteById(long hotelId) {
-        hotelRepository.deleteById(hotelId);
+
+    @Transactional(readOnly = true)
+    public List<Hotel> findByOwnerUsername(String username) {
+        return hotelRepository.getAllByOwnerUsername(username);
+    }
+
+    private Owner getHotelOwnerIfOwned(long hotelId, String username) {
+        return ownerRepository
+                .findByUsernameAndHotelsId(username, hotelId)
+                .orElseThrow(() -> new ResourceRestrictedOrNotExistingException("Hotel is not owned by the user"));
     }
 
     @Autowired

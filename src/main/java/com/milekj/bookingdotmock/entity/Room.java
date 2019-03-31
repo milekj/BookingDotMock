@@ -1,7 +1,12 @@
 package com.milekj.bookingdotmock.entity;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Table(name = "rooms", uniqueConstraints = @UniqueConstraint(
@@ -17,9 +22,15 @@ public class Room {
     private Hotel hotel;
 
     @Column(length = 5)
+    @Length(max = 5, message = "Number length cannot be greater than 5")
+    @NotBlank(message = "Number cannot be empty")
     private String roomNumber;
 
+    @Min(value = 1, message = "Guest number cannot be lower than 1")
+    @NotNull(message = "Cannot be empty")
     private Integer maxGuestsNumber;
+
+    @DecimalMin("0.0")
     private BigDecimal pricePerNight;
 
     public Room() {

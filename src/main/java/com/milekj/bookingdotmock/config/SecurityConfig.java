@@ -46,8 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/hotels/*").hasAuthority(OWNER_AUTHORITY)
                 .antMatchers("/rooms/*").hasAuthority(OWNER_AUTHORITY)
-                .antMatchers("/", "/register*", "/process*").permitAll()
-                .anyRequest().authenticated();
+                .antMatchers("/bookings/add").hasAuthority(CUSTOMER_AUTHORITY)
+                .anyRequest().permitAll();
 
     }
 

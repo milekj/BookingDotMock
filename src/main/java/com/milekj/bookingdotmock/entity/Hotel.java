@@ -1,6 +1,7 @@
 package com.milekj.bookingdotmock.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,13 +14,13 @@ public class Hotel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotEmpty(message = "Name cannot be empty")
+    @NotBlank(message = "Name cannot be empty")
     private String name;
 
-    @NotEmpty(message = "City cannot be empty")
+    @NotBlank(message = "City cannot be empty")
     private String city;
 
-    @NotEmpty(message = "Address cannot be empty")
+    @NotBlank(message = "Address cannot be empty")
     private String address;
 
     @ManyToOne(cascade = {CascadeType.PERSIST})

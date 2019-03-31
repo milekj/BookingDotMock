@@ -2,16 +2,16 @@ package com.milekj.bookingdotmock.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(
+        columnNames = {"room_id", "date"}
+))
 public class BookingDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @ManyToOne
-    @JoinColumn(name = "booking_id")
-    private Booking booking;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
@@ -19,29 +19,24 @@ public class BookingDetails {
 
     private int guestsNumber;
 
-    private Date date;
+    private LocalDate date;
 
     public BookingDetails() {
 
     }
 
-    public BookingDetails(Booking booking, Room room, int guestsNumber, Date date) {
-        this.booking = booking;
+    public BookingDetails(Room room, int guestsNumber, LocalDate date) {
         this.room = room;
         this.guestsNumber = guestsNumber;
         this.date = date;
     }
 
+    public long getId() {
+        return id;
+    }
+
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Booking getBooking() {
-        return booking;
-    }
-
-    public void setBooking(Booking booking) {
-        this.booking = booking;
     }
 
     public Room getRoom() {
@@ -60,11 +55,11 @@ public class BookingDetails {
         this.guestsNumber = guestsNumber;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 }
