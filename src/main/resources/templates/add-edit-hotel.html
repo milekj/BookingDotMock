@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="#" th:action="@{/hotels/processAddOrEdit}" th:object="${hotel}" method="post">
+    <input type="hidden" th:field="*{id}" th:value="${hotelId}"/>
+    <table>
+        <tbody>
+        <tr>
+            <td><label>name:</label></td>
+            <td><input type="text" th:field="*{name}" /></td>
+            <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
+        </tr>
+        <tr>
+            <td><label>city:</label></td>
+            <td><input type="text" th:field="*{city}"/></td>
+            <td th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></td>
+        </tr>
+        <tr>
+            <td><label>address:</label></td>
+            <td><input type="text" th:field="*{address}"/></td>
+            <td th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></td>
+        </tr>
+        <tr>
+            <td><button type="submit">Save!</button></td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+</body>
+</html>

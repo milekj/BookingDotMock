@@ -44,9 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .logout()
                 .and()
             .authorizeRequests()
-                .antMatchers("/hotels/*").hasAuthority(OWNER_AUTHORITY)
-                .antMatchers("/rooms/*").hasAuthority(OWNER_AUTHORITY)
-                .antMatchers("/bookings/add").hasAuthority(CUSTOMER_AUTHORITY)
+                .antMatchers("/hotels/*", "/rooms/*").hasAuthority(OWNER_AUTHORITY)
+                .antMatchers("/bookings/add", "/search").hasAuthority(CUSTOMER_AUTHORITY)
                 .anyRequest().permitAll();
 
     }
